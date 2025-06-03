@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Метеостанция</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Текущие показания</h1>
+    {% if latest %}
+        <p>Температура: {{ latest.temperature }} °C</p>
+        <p>Влажность: {{ latest.humidity }} %</p>
+        <p>Давление: {{ latest.pressure }} гПа</p>
+        <p>Время: {{ latest.timestamp }}</p>
+    {% else %}
+        <p>Нет данных</p>
+    {% endif %}
+
+    <h2>Графики за последние 12 часов (интервал 30 мин)</h2>
+    <canvas id="tempChart"></canvas>
+    <canvas id="humChart"></canvas>
+    <canvas id="presChart"></canvas>
+
+    <script>
+        const labels = {{ labels|safe }};
+        const temps = {{ temperatures|safe }};
+        const hums = {{ humidities|safe }};
+        const press = {{ pressures|safe }};
+
+        const createChart = (id, label, data, color) => {
+            new Chart(document.getElementById(id), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: color,
+                        tension: 0.3,
+                        spanGaps: true,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        }
+
+        createChart('tempChart', 'Температура (°C)', temps, 'red');
+        createChart('humChart', 'Влажность (%)', hums, 'blue');
+        createChart('presChart', 'Давление (гПа)', press, 'green');
+    </script>
+</body>
+</html>
