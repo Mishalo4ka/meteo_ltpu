@@ -2,7 +2,7 @@
 
 1. **Клонируйте репозиторий:**
     ```bash
-    git clone <ссылка_на_репозиторий>
+    git clone https://github.com/Mishalo4ka/meteo_ltpu.git
     cd meteo_ltpu-master/meteo
     ```
 
