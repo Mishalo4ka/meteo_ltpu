@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+p, h1, h2, h3, button, a{
+    font-family: "Roboto", sans-serif;
+}
+body, html{
+    width: 100vw;
+    overflow-x: hidden;
+}
+header{
+    height:12vh;
+    width:100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4vw;
+}
+main{
+    width:100vw;
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+header h1{
+    color: #6B95E2;
+    font-weight: 700;
+    font-size: 2vw;
+}
+.headerContent{
+    width: 80vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+}
+.headerContent img{
+    width: 4.5vw;
+}
+.mainContent{
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+
+}
+.dataElement{
+    border-radius: 3.5vw;
+    background-color: rgba(217, 217, 217, 0.3);
+    display: flex;
+    align-items: center;
+
+}
+
+.graph {
+    border-bottom: 0.3vh solid #6B95E2;
+}
+.graphContainer {
+    height: 100%;
+    width: 80%;
+}
+.graphSection{
+    height: 80%;
+    width: 81%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.data{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #D2E0F9;
+    flex-direction: column;
+    width: 15vw;
+    padding: 1vw;
+    gap: 1vw;
+    border-radius: 3.5vw;
+}
+.data h1{
+    color: #6B95E2;
+    font-weight: 600;
+    font-size: 1.5vw;
+}
+.dataElement img{
+    width: 6vw;
+}
+
+.dataContent{
+    display: flex;
+    flex-direction: column;
+    gap:1vw;
+}
+
+@media (max-width: 768px) {
+    header, .headerContent{
+        justify-content: center;
+        align-items: center;
+    }
+    .headerContent h1{
+        font-size: 4vh;
+    }
+    .headerContent img{
+        width: 6vh;
+    }
+    .dataElement{
+        flex-direction: column;
+        margin: 2vw;
+    }
+    .data{
+        justify-content: start;
+        width: 100%;
+        flex-direction: row;
+        padding: 2vw 4vw 2vw 4vw    ;
+        gap: 5vw;
+    }
+    .data img{
+        height: 4.5vh !important;
+        width: auto !important;
+    }
+    .data h1{
+        font-size: 3vh;
+
+    }
+    .mainContent{
+        width:90vw;
+    
+    }
+    .graphSection{
+        padding: 2vw;
+        width: 100%;
+        height: 20vh;
+
+    }
+    .graphContainer{
+        width: 100%;
+    }
+}

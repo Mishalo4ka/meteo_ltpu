@@ -1,58 +1,101 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Метеостанция</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-    <h1>Текущие показания</h1>
-    {% if latest %}
-        <p>Температура: {{ latest.temperature }} °C</p>
-        <p>Влажность: {{ latest.humidity }} %</p>
-        <p>Давление: {{ latest.pressure }} гПа</p>
-        <p>Время: {{ latest.timestamp }}</p>
-    {% else %}
-        <p>Нет данных</p>
-    {% endif %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeteoMonitor</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 
-    <h2>Графики за последние 12 часов (интервал 30 мин)</h2>
-    <canvas id="tempChart"></canvas>
-    <canvas id="humChart"></canvas>
-    <canvas id="presChart"></canvas>
+    <!-- Перед подключением script.js -->
+    {{ labels|json_script:"labels-data" }}
+    {{ temperatures|json_script:"temp-data" }}
+    {{ humidities|json_script:"hum-data" }}
+    {{ pressures|json_script:"pres-data" }}
 
     <script>
-        const labels = {{ labels|safe }};
-        const temps = {{ temperatures|safe }};
-        const hums = {{ humidities|safe }};
-        const press = {{ pressures|safe }};
-
-        const createChart = (id, label, data, color) => {
-            new Chart(document.getElementById(id), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: label,
-                        data: data,
-                        borderColor: color,
-                        tension: 0.3,
-                        spanGaps: true,
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: false
-                        }
-                    }
-                }
-            });
-        }
-
-        createChart('tempChart', 'Температура (°C)', temps, 'red');
-        createChart('humChart', 'Влажность (%)', hums, 'blue');
-        createChart('presChart', 'Давление (гПа)', press, 'green');
+        const latestTemp = {{ latest.temperature }};
+        const latestHum = {{ latest.humidity }};
+        const latestPres = {{ latest.pressure }};
     </script>
+</head>
+<body>
+    <header>
+        <div class="headerContent">
+            <h1>MeteoMonitor</h1>
+            <img src="{% static 'images/logo.png' %}">
+        </div>
+    </header>
+
+    <main>
+        <section class="mainContent">
+
+            <section class="dataContent">
+
+
+                <div class="dataElement">
+                    <div class="data">
+                        <img src="{% static 'images/preasure.png' %}">
+                        <h1  id = "preasure">765 мм. рт.</h1>
+                    </div>
+                    <div class="graphSection">
+                        <div class="graphContainer">
+                            <canvas class="graph" id = "graph1"></canvas>
+                        </div>
+                    </div>
+                    
+
+                    
+
+                </div>
+
+                <div class="dataElement">
+                    <div class="data">
+                        <img src="{% static 'images/temp.png' %}" style="height: 5vw; width: auto;">
+                        <h1 id = "temp">25°</h1>
+                    </div>
+                    
+                    <div class="graphSection">
+                        <div class="graphContainer">
+                            <canvas class="graph" id = "graph2"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="dataElement">
+                    <div class="data">
+                        <img src="{% static 'images/humidity.png' %}" style="width: 5vw;">
+                        <h1 id = "humidity" >76%</h1>
+                    </div>
+                    <div class="graphSection">
+                        <div class="graphContainer">
+                            <canvas class="graph" id = "graph3"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </section>
+
+
+
+        </section>
+    </main>
+
+    <footer>
+        <pre>
+            Labels: {{ labels }}
+            Temps: {{ temperatures }}
+            Humidities: {{ humidities }}
+            Pressures: {{ pressures }}
+            Latest: {{ latest }}
+        </pre>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="{% static 'script.js' %}"></script>
 </body>
 </html>
