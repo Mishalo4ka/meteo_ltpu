@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Measurement
 from django.utils.timezone import now, timedelta
+from django.http import JsonResponse
+
 
 def dashboard_old(request):
     latest = Measurement.objects.last()
@@ -58,3 +60,16 @@ def dashboard(request):
         'humidities': humidities,
         'pressures': pressures,
     })
+
+
+def latest_data(request):
+    latest = Measurement.objects.last()
+    if latest:
+        return JsonResponse({
+            'temperature': latest.temperature,
+            'humidity': latest.humidity,
+            'pressure': latest.pressure,
+            'timestamp': latest.timestamp.strftime('%H:%M:%S')
+        })
+    return JsonResponse({}, status=404)
+

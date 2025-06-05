@@ -9,6 +9,15 @@ const tempDataArr = JSON.parse(document.getElementById('temp-data').textContent)
 const humDataArr = JSON.parse(document.getElementById('hum-data').textContent);
 const presDataArr = JSON.parse(document.getElementById('pres-data').textContent);
 
+
+
+
+const tempData = document.getElementById('temp');
+const humidityData = document.getElementById('humidity');
+const preasureData = document.getElementById('preasure');
+
+
+
 // Обновляем карточки с показателями
 document.getElementById('temp').textContent = `${latestTemp}°C`;
 document.getElementById('humidity').textContent = `${latestHum}%`;
@@ -93,3 +102,40 @@ function createChart(ctx, labels, data, beginAtZero){
         plugins: [ChartDataLabels]
     });
 }
+
+setInterval(() => {
+    fetch('/latest/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.temperature !== undefined) {
+                // Обновить карточки
+                tempData.textContent = `${data.temperature}°C`;
+                humidityData.textContent = `${data.humidity}%`;
+                preasureData.textContent = `${data.pressure} мм рт. ст.`;
+
+                // Добавить новую точку на график
+                const timeLabel = data.timestamp;
+
+                // Обновим графики (в конец добавим точку, уберём первую)
+                const maxPoints = 12;
+
+                const updateChart = (chart, arr, newValue) => {
+                    chart.data.labels.push(timeLabel);
+                    arr.push(newValue);
+
+                    if (chart.data.labels.length > maxPoints) {
+                        chart.data.labels.shift();
+                        arr.shift();
+                    }
+
+                    chart.data.datasets[0].data = arr;
+                    chart.update();
+                };
+
+                updateChart(chart1, presDataArr, data.pressure);
+                updateChart(chart2, tempDataArr, data.temperature);
+                updateChart(chart3, humDataArr, data.humidity);
+            }
+        });
+}, 5000);  // каждые 5 секунд
+
