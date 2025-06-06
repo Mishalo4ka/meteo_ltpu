@@ -117,7 +117,7 @@ setInterval(() => {
                 const timeLabel = data.timestamp;
 
                 // Обновим графики (в конец добавим точку, уберём первую)
-                const maxPoints = 12;
+                const maxPoints = 6;
 
                 const updateChart = (chart, arr, newValue) => {
                     chart.data.labels.push(timeLabel);
